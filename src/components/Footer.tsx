@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Video, Github, Twitter, Linkedin } from "lucide-react";
+import { GraduationCap, Github, Twitter, Linkedin } from "lucide-react";
 
 export const Footer = () => {
   const footerLinks = {
@@ -7,18 +7,15 @@ export const Footer = () => {
       { name: "Features", href: "#features" },
       { name: "Tutors", href: "/tutors" },
       { name: "Pricing", href: "#pricing" },
-      { name: "FAQ", href: "#faq" },
     ],
     company: [
       { name: "About", href: "#about" },
       { name: "Blog", href: "#blog" },
-      { name: "Careers", href: "#careers" },
       { name: "Contact", href: "#contact" },
     ],
     legal: [
       { name: "Privacy", href: "#privacy" },
       { name: "Terms", href: "#terms" },
-      { name: "Security", href: "#security" },
     ],
   };
 
@@ -29,23 +26,21 @@ export const Footer = () => {
   ];
 
   return (
-    <footer className="relative border-t border-slate-800 bg-slate-950">
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+    <footer className="relative border-t border-border/30 bg-surface-primary/50">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-gradient-to-br from-brand to-purple">
-                <Video className="w-5 h-5 text-white" />
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="p-2 rounded-2xl bg-gradient-to-br from-brand to-accent">
+                <GraduationCap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-lg font-display font-bold">
-                <span className="text-foreground">AI</span>
-                <span className="gradient-text">Tutor</span>
+              <span className="text-xl font-display font-bold gradient-text">
+                Elevate
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Experience personalized learning through real-time video conversations with
-              intelligent AI tutors.
+            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+              Experience personalized learning through intelligent AI tutors.
             </p>
             <div className="flex items-center gap-3">
               {socialLinks.map((social) => (
@@ -54,10 +49,10 @@ export const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-muted-foreground hover:text-foreground transition-all hover:scale-110"
+                  className="p-2 rounded-xl bg-surface-secondary/50 hover:bg-surface-secondary text-muted-foreground hover:text-foreground transition-all hover:scale-110"
                   aria-label={social.label}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
@@ -65,7 +60,7 @@ export const Footer = () => {
 
           {/* Product Links */}
           <div>
-            <h3 className="font-display font-semibold text-foreground mb-4">Product</h3>
+            <h3 className="font-display font-semibold text-foreground mb-4 text-sm">Product</h3>
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.name}>
@@ -82,7 +77,7 @@ export const Footer = () => {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-display font-semibold text-foreground mb-4">Company</h3>
+            <h3 className="font-display font-semibold text-foreground mb-4 text-sm">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
@@ -99,7 +94,7 @@ export const Footer = () => {
 
           {/* Legal Links */}
           <div>
-            <h3 className="font-display font-semibold text-foreground mb-4">Legal</h3>
+            <h3 className="font-display font-semibold text-foreground mb-4 text-sm">Legal</h3>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
@@ -116,12 +111,9 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-8 border-t border-border/30 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2025 AI Video Tutor. All rights reserved.
-          </p>
-          <p className="text-xs text-muted-foreground">
-            No credit card required • Cancel anytime • 100% free to start
+            © 2025 Elevate. All rights reserved.
           </p>
         </div>
       </div>

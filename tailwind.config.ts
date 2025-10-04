@@ -24,16 +24,7 @@ export default {
           foreground: "hsl(var(--brand-foreground))",
           hover: "hsl(var(--brand-hover))",
           active: "hsl(var(--brand-active))",
-        },
-        purple: {
-          DEFAULT: "hsl(var(--purple))",
-          foreground: "hsl(var(--purple-foreground))",
-          muted: "hsl(var(--purple-muted))",
-        },
-        pink: {
-          DEFAULT: "hsl(var(--pink))",
-          foreground: "hsl(var(--pink-foreground))",
-          muted: "hsl(var(--pink-muted))",
+          muted: "hsl(var(--brand-muted))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -86,8 +77,7 @@ export default {
       },
       boxShadow: {
         'glow-brand': 'var(--glow-brand)',
-        'glow-purple': 'var(--glow-purple)',
-        'glow-pink': 'var(--glow-pink)',
+        'glow-accent': 'var(--glow-accent)',
       },
       borderRadius: {
         lg: "var(--radius)",

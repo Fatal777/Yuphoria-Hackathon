@@ -1,15 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  User,
-  Video as VideoIcon,
-  Bell,
-  Globe,
-  Shield,
-  HelpCircle,
-  Camera,
-  Mic,
-} from "lucide-react";
+import { User, Video as VideoIcon, Bell, Shield, Camera, Mic } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,19 +16,18 @@ export const Settings = () => {
     { id: "video", name: "Video & Audio", icon: VideoIcon },
     { id: "preferences", name: "Preferences", icon: Bell },
     { id: "privacy", name: "Privacy", icon: Shield },
-    { id: "help", name: "Help & Support", icon: HelpCircle },
   ];
 
   return (
-    <div className="min-h-screen bg-background pt-24 pb-16">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div className="min-h-screen bg-background pt-32 pb-20">
+      <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-display font-bold mb-2">
+          <h1 className="text-4xl md:text-6xl font-display font-bold mb-2">
             <span className="gradient-text">Settings</span>
           </h1>
           <p className="text-xl text-muted-foreground">
@@ -45,26 +35,26 @@ export const Settings = () => {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-6">
           {/* Sidebar Navigation */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-1"
           >
-            <div className="glass-card p-4 space-y-2 sticky top-24">
+            <div className="glass-card p-3 space-y-1 sticky top-28">
               {sections.map((section) => (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all ${
                     activeSection === section.id
-                      ? "bg-brand text-brand-foreground shadow-glow-brand"
-                      : "hover:bg-slate-800/60"
+                      ? "bg-brand text-brand-foreground"
+                      : "hover:bg-surface-secondary/50 text-muted-foreground"
                   }`}
                 >
                   <section.icon className="w-5 h-5" />
-                  <span className="font-medium">{section.name}</span>
+                  <span className="font-medium text-sm">{section.name}</span>
                 </button>
               ))}
             </div>
@@ -82,10 +72,10 @@ export const Settings = () => {
                 <div className="glass-card p-8 space-y-6">
                   <h2 className="text-2xl font-display font-semibold">Profile Information</h2>
 
-                  {/* Avatar Upload */}
+                  {/* Avatar */}
                   <div className="flex items-center gap-6">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand to-purple flex items-center justify-center">
-                      <User className="w-12 h-12 text-white" />
+                    <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-brand to-accent flex items-center justify-center">
+                      <User className="w-10 h-10 text-white" />
                     </div>
                     <div>
                       <GradientButton size="sm">Upload Photo</GradientButton>
@@ -102,7 +92,7 @@ export const Settings = () => {
                       <Input
                         id="name"
                         defaultValue="John Doe"
-                        className="glass-card border-slate-700/50"
+                        className="glass-card border-border/40 rounded-2xl"
                       />
                     </div>
 
@@ -113,7 +103,7 @@ export const Settings = () => {
                         type="email"
                         defaultValue="john@example.com"
                         disabled
-                        className="glass-card border-slate-700/50"
+                        className="glass-card border-border/40 rounded-2xl"
                       />
                       <p className="text-xs text-muted-foreground">
                         Email cannot be changed
@@ -126,7 +116,7 @@ export const Settings = () => {
                         id="bio"
                         placeholder="Tell us about yourself..."
                         rows={4}
-                        className="glass-card border-slate-700/50"
+                        className="glass-card border-border/40 rounded-2xl"
                       />
                     </div>
                   </div>
@@ -145,17 +135,15 @@ export const Settings = () => {
                   <h2 className="text-2xl font-display font-semibold">Video & Audio Settings</h2>
 
                   <div className="space-y-6">
-                    {/* Camera */}
                     <div className="space-y-3">
                       <Label>Camera Device</Label>
                       <Select defaultValue="default">
-                        <SelectTrigger className="glass-card border-slate-700/50">
+                        <SelectTrigger className="glass-card border-border/40 rounded-2xl">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="default">Default Camera</SelectItem>
-                          <SelectItem value="camera1">HD Webcam (Camera 1)</SelectItem>
-                          <SelectItem value="camera2">Built-in Camera</SelectItem>
+                          <SelectItem value="camera1">HD Webcam</SelectItem>
                         </SelectContent>
                       </Select>
                       <GradientButton variant="outline" size="sm">
@@ -164,17 +152,15 @@ export const Settings = () => {
                       </GradientButton>
                     </div>
 
-                    {/* Microphone */}
                     <div className="space-y-3">
                       <Label>Microphone</Label>
                       <Select defaultValue="default">
-                        <SelectTrigger className="glass-card border-slate-700/50">
+                        <SelectTrigger className="glass-card border-border/40 rounded-2xl">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="default">Default Microphone</SelectItem>
                           <SelectItem value="mic1">USB Microphone</SelectItem>
-                          <SelectItem value="mic2">Built-in Microphone</SelectItem>
                         </SelectContent>
                       </Select>
                       <GradientButton variant="outline" size="sm">
@@ -183,17 +169,16 @@ export const Settings = () => {
                       </GradientButton>
                     </div>
 
-                    {/* Video Quality */}
                     <div className="space-y-3">
                       <Label>Video Quality</Label>
                       <Select defaultValue="720p">
-                        <SelectTrigger className="glass-card border-slate-700/50">
+                        <SelectTrigger className="glass-card border-border/40 rounded-2xl">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="480p">480p (Standard)</SelectItem>
-                          <SelectItem value="720p">720p (HD - Recommended)</SelectItem>
-                          <SelectItem value="1080p">1080p (Full HD)</SelectItem>
+                          <SelectItem value="480p">480p</SelectItem>
+                          <SelectItem value="720p">720p (Recommended)</SelectItem>
+                          <SelectItem value="1080p">1080p</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -213,8 +198,7 @@ export const Settings = () => {
                   <h2 className="text-2xl font-display font-semibold">Learning Preferences</h2>
 
                   <div className="space-y-6">
-                    {/* Toggles */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between py-3">
                       <div className="space-y-1">
                         <Label>Enable Captions</Label>
                         <p className="text-sm text-muted-foreground">
@@ -224,7 +208,7 @@ export const Settings = () => {
                       <Switch defaultChecked />
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between py-3">
                       <div className="space-y-1">
                         <Label>Auto-record Sessions</Label>
                         <p className="text-sm text-muted-foreground">
@@ -234,47 +218,18 @@ export const Settings = () => {
                       <Switch />
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <Label>Email Notifications</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive updates about your learning progress
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-
-                    {/* Language */}
-                    <div className="space-y-3">
+                    <div className="space-y-3 pt-3">
                       <Label>Preferred Language</Label>
                       <Select defaultValue="en">
-                        <SelectTrigger className="glass-card border-slate-700/50">
+                        <SelectTrigger className="glass-card border-border/40 rounded-2xl">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="en">English</SelectItem>
                           <SelectItem value="es">Spanish</SelectItem>
                           <SelectItem value="fr">French</SelectItem>
-                          <SelectItem value="de">German</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
-
-                    {/* Subjects */}
-                    <div className="space-y-3">
-                      <Label>Preferred Subjects</Label>
-                      <div className="flex flex-wrap gap-2">
-                        {["Math", "Science", "Programming", "Languages", "Art", "Music"].map(
-                          (subject) => (
-                            <button
-                              key={subject}
-                              className="px-4 py-2 rounded-full glass-card hover:border-brand/50 text-sm font-medium"
-                            >
-                              {subject}
-                            </button>
-                          )
-                        )}
-                      </div>
                     </div>
                   </div>
 
@@ -292,11 +247,11 @@ export const Settings = () => {
                   <h2 className="text-2xl font-display font-semibold">Privacy & Security</h2>
 
                   <div className="space-y-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between py-3">
                       <div className="space-y-1">
                         <Label>Two-Factor Authentication</Label>
                         <p className="text-sm text-muted-foreground">
-                          Add an extra layer of security to your account
+                          Add extra security to your account
                         </p>
                       </div>
                       <GradientButton variant="outline" size="sm">
@@ -304,7 +259,7 @@ export const Settings = () => {
                       </GradientButton>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between py-3">
                       <div className="space-y-1">
                         <Label>Session History</Label>
                         <p className="text-sm text-muted-foreground">
@@ -313,71 +268,10 @@ export const Settings = () => {
                       </div>
                       <Switch defaultChecked />
                     </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <Label>Data Sharing</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Allow anonymous usage data to improve the platform
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-700/50">
+                  <div className="pt-4 border-t border-border/30">
                     <GradientButton variant="outline">Change Password</GradientButton>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Help Section */}
-            {activeSection === "help" && (
-              <div className="space-y-6">
-                <div className="glass-card p-8 space-y-6">
-                  <h2 className="text-2xl font-display font-semibold">Help & Support</h2>
-
-                  <div className="space-y-4">
-                    <a
-                      href="#"
-                      className="block p-4 glass-card hover:border-brand/50 transition-all"
-                    >
-                      <h3 className="font-semibold mb-1">Documentation</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Learn how to get the most out of AI Video Tutor
-                      </p>
-                    </a>
-
-                    <a
-                      href="#"
-                      className="block p-4 glass-card hover:border-brand/50 transition-all"
-                    >
-                      <h3 className="font-semibold mb-1">FAQs</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Find answers to common questions
-                      </p>
-                    </a>
-
-                    <a
-                      href="#"
-                      className="block p-4 glass-card hover:border-brand/50 transition-all"
-                    >
-                      <h3 className="font-semibold mb-1">Contact Support</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Get help from our support team
-                      </p>
-                    </a>
-
-                    <div className="pt-4">
-                      <Label className="mb-2 block">Feedback</Label>
-                      <Textarea
-                        placeholder="Tell us how we can improve..."
-                        rows={4}
-                        className="glass-card border-slate-700/50 mb-3"
-                      />
-                      <GradientButton>Submit Feedback</GradientButton>
-                    </div>
                   </div>
                 </div>
               </div>

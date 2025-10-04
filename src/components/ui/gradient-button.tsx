@@ -4,14 +4,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const gradientButtonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-base font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-base font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        hero: "bg-brand text-brand-foreground hover:bg-brand-hover hover:scale-105 shadow-glow-brand",
-        outline: "border-2 border-brand bg-transparent text-brand hover:bg-brand/10",
-        glass: "bg-slate-800/60 backdrop-blur-md border border-slate-700/50 text-foreground hover:border-brand/50 hover:shadow-glow-brand",
-        ghost: "bg-transparent text-foreground hover:bg-slate-800/60",
+        hero: "bg-gradient-to-r from-brand to-accent text-brand-foreground shadow-glow-brand hover:scale-105",
+        outline: "border-2 border-brand/40 text-brand hover:bg-brand/10 hover:border-brand",
+        glass: "bg-surface-secondary/50 backdrop-blur-xl border border-border/40 text-foreground hover:border-brand/40",
+        ghost: "text-brand hover:bg-brand/10",
       },
       size: {
         default: "h-12 px-6 py-3",
