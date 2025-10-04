@@ -43,12 +43,15 @@ export const useWebRTC = ({ roomId: initialRoomId, userId, companionId }: UseWeb
     socket.current = io(SOCKET_URL, {
       transports: ['websocket', 'polling'],
       reconnection: true,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: 3,
       reconnectionDelay: 1000,
+      timeout: 5000,
     });
 
     socket.current.on('connect', () => {
       console.log('Socket.IO connected');
+      setIsConnecting(false);
+      setIsConnected(true);
     });
 
     socket.current.on('disconnect', () => {
@@ -58,10 +61,28 @@ export const useWebRTC = ({ roomId: initialRoomId, userId, companionId }: UseWeb
 
     socket.current.on('error', (err: any) => {
       console.error('Socket.IO error:', err);
-      setError('Connection error');
+      setError('Connection error - continuing in offline mode');
+      // Don't block the UI, allow chat to work
+      setIsConnecting(false);
     });
 
+    socket.current.on('connect_error', (err: any) => {
+      console.error('Socket.IO connection error:', err);
+      setError('Failed to connect - using offline mode');
+      setIsConnecting(false);
+    });
+
+    // Timeout fallback - if not connected in 5 seconds, continue anyway
+    const connectionTimeout = setTimeout(() => {
+      if (!socket.current?.connected) {
+        console.warn('Socket.IO connection timeout - continuing in offline mode');
+        setIsConnecting(false);
+        setError('Running in offline mode');
+      }
+    }, 5000);
+
     return () => {
+      clearTimeout(connectionTimeout);
       socket.current?.disconnect();
     };
   }, []);

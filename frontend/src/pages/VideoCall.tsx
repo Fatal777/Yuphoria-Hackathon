@@ -119,6 +119,7 @@ export const VideoCall = () => {
 
     const newMessage: Message = {
       id: Date.now().toString(),
+      message: messageInput,
       text: messageInput,
       sender: "user",
       timestamp: new Date(),
@@ -133,6 +134,7 @@ export const VideoCall = () => {
       setIsAITyping(false);
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
+        message: "I understand your question. Let me explain that in detail...",
         text: "I understand your question. Let me explain that in detail...",
         sender: "ai",
         timestamp: new Date(),

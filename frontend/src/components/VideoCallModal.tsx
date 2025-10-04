@@ -78,22 +78,29 @@ export const VideoCallModal = ({
   useEffect(() => {
     const initializeCall = async () => {
       try {
-        // Start local media
+        // Start local media first
         await startLocalMedia();
 
         // Create room
         const newRoomId = await createRoom();
+        console.log("Room created:", newRoomId);
 
         // Join room
         await joinRoom(newRoomId);
+        console.log("Joined room successfully");
       } catch (err) {
         console.error("Failed to initialize call:", err);
+        // Continue anyway to allow chat functionality
       }
     };
 
-    initializeCall();
+    // Add small delay to ensure component is mounted
+    const timer = setTimeout(() => {
+      initializeCall();
+    }, 500);
 
     return () => {
+      clearTimeout(timer);
       endCall();
     };
   }, []);
@@ -111,16 +118,18 @@ export const VideoCallModal = ({
     }
   }, [remoteStream, remoteVideoRef]);
 
-  // Call duration timer
+  // Call duration timer - start after 3 seconds regardless of connection
   useEffect(() => {
-    if (!isConnected) return;
+    const startTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setCallDuration((prev) => prev + 1);
+      }, 1000);
 
-    const interval = setInterval(() => {
-      setCallDuration((prev) => prev + 1);
-    }, 1000);
+      return () => clearInterval(interval);
+    }, 3000);
 
-    return () => clearInterval(interval);
-  }, [isConnected]);
+    return () => clearTimeout(startTimer);
+  }, []);
 
   // Auto-scroll messages
   useEffect(() => {
