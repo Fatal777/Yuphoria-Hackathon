@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Mic,
   MicOff,
@@ -10,37 +10,79 @@ import {
   Send,
   MoreVertical,
   Maximize2,
+  Volume2,
+  BookOpen,
+  FileText,
+  Sparkles,
 } from "lucide-react";
 import { GradientButton } from "@/components/ui/gradient-button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useWebRTC } from "@/hooks/useWebRTC";
 
 interface Message {
   id: string;
+  message: string;
   text: string;
   sender: "user" | "ai";
   timestamp: Date;
+  audio_url?: string;
+  video_url?: string;
+}
+
+interface Suggestion {
+  type: 'course' | 'material' | 'exercise';
+  title: string;
+  description: string;
+  url?: string;
 }
 
 export const VideoCall = () => {
   const { tutorId } = useParams();
   const navigate = useNavigate();
+  const [messageInput, setMessageInput] = useState("");
+  const [callDuration, setCallDuration] = useState(0);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState<string | null>(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("connecting");
+  const [isAITyping, setIsAITyping] = useState(false);
   const [isMicOn, setIsMicOn] = useState(true);
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isRecording, setIsRecording] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("connecting");
-  const [callDuration, setCallDuration] = useState(0);
-  const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Hello! I'm ready to help you learn. What would you like to focus on today?",
-      sender: "ai",
-      timestamp: new Date(),
-    },
-  ]);
-  const [isAITyping, setIsAITyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const remoteVideoElementRef = useRef<HTMLVideoElement>(null);
+  const localVideoElementRef = useRef<HTMLVideoElement>(null);
+
+  const userId = `user_${Date.now()}`;
+  
+  const [messages, setMessages] = useState<Message[]>([]);
+  
+  // Uncomment when WebRTC hook is ready
+  // const {
+  //   roomId,
+  //   localStream,
+  //   remoteStream,
+  //   isConnected,
+  //   isConnecting,
+  //   isMicEnabled,
+  //   isCameraEnabled,
+  //   messages,
+  //   error,
+  //   localVideoRef,
+  //   remoteVideoRef,
+  //   createRoom,
+  //   joinRoom,
+  //   startLocalMedia,
+  //   sendMessage,
+  //   toggleMic,
+  //   toggleCamera,
+  //   endCall,
+  // } = useWebRTC({
+  //   userId,
+  //   companionId: tutorId,
+  // });
 
   // Simulate connection establishment
   useEffect(() => {
@@ -211,9 +253,9 @@ export const VideoCall = () => {
                       : "bg-slate-800 text-foreground"
                   )}
                 >
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-sm">{message.text || message.message}</p>
                   <p className="text-xs opacity-60 mt-1">
-                    {message.timestamp.toLocaleTimeString([], {
+                    {new Date(message.timestamp).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}

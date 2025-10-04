@@ -8,7 +8,7 @@ import { Footer } from "./components/Footer";
 import Index from "./pages/Index";
 import { Landing } from "./pages/Landing";
 import { Tutors } from "./pages/Tutors";
-import { VideoCall } from "./pages/VideoCall";
+import { VideoCallPage } from "./pages/VideoCallPage";
 import { History } from "./pages/History";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -23,7 +23,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           {/* Video Call - Full Screen (No Nav/Footer) */}
-          <Route path="/session/:tutorId" element={<VideoCall />} />
+          <Route path="/session/:tutorId" element={<VideoCallPage />} />
           
           {/* Pages with Navigation and Footer */}
           <Route
