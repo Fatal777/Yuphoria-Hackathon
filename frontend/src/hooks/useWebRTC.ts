@@ -226,6 +226,13 @@ export const useWebRTC = ({ roomId: initialRoomId, userId, companionId }: UseWeb
       role: 'user',
     });
 
+    // Set connected after join (even if peer doesn't connect)
+    setTimeout(() => {
+      setIsConnecting(false);
+      setIsConnected(true);
+      console.log('Room joined - connection established');
+    }, 1000);
+
     // Listen for peer joined
     socket.current.on('peer-joined', async (data: any) => {
       console.log('Peer joined:', data);

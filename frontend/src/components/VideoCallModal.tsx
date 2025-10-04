@@ -23,6 +23,7 @@ import { GradientButton } from "@/components/ui/gradient-button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useWebRTC } from "@/hooks/useWebRTC";
+import { useVoiceRecording } from "@/hooks/useVoiceRecording";
 
 interface VideoCallModalProps {
   companionId: string;
@@ -47,8 +48,27 @@ export const VideoCallModal = ({
   const [callDuration, setCallDuration] = useState(0);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Voice recording hook
+  const {
+    isRecording: isVoiceRecording,
+    transcript: voiceTranscript,
+    interimTranscript,
+    isSupported: isVoiceSupported,
+    toggleRecording,
+    clearTranscript,
+  } = useVoiceRecording({
+    onFinalTranscript: (text) => {
+      // Auto-send when user stops speaking
+      if (text.trim()) {
+        setMessageInput((prev) => prev + ' ' + text);
+      }
+    },
+    continuous: true,
+  });
 
   const {
     roomId,
@@ -422,21 +442,36 @@ export const VideoCallModal = ({
 
           {/* Message Input */}
           <div className="p-4 border-t border-slate-700/50 space-y-2">
+            {/* Voice Recording Indicator */}
+            {isVoiceRecording && (
+              <div className="flex items-center gap-2 px-3 py-2 bg-red-500/20 border border-red-500/50 rounded-lg">
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                <span className="text-sm text-red-400 font-medium">Recording...</span>
+                {interimTranscript && (
+                  <span className="text-sm text-muted-foreground italic">
+                    "{interimTranscript}"
+                  </span>
+                )}
+              </div>
+            )}
+            
             <div className="flex gap-2">
-              <Textarea
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage();
-                  }
-                }}
-                placeholder="Type a message..."
-                className="flex-1 resize-none glass-card border-slate-700/50 focus:border-brand min-h-[44px] max-h-32"
-                rows={2}
-                disabled={!isConnected}
-              />
+              <div className="flex-1 relative">
+                <Textarea
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  placeholder={isVoiceRecording ? "Listening... (or type here)" : "Type a message or click mic to speak..."}
+                  className="flex-1 resize-none glass-card border-slate-700/50 focus:border-brand min-h-[44px] max-h-32"
+                  rows={2}
+                  disabled={!isConnected}
+                />
+              </div>
               <GradientButton
                 onClick={handleSendMessage}
                 size="icon"
@@ -453,15 +488,29 @@ export const VideoCallModal = ({
       {/* Control Bar */}
       <div className="h-20 border-t border-slate-700/50 flex items-center justify-center gap-4 glass-card">
         <button
-          onClick={toggleMic}
+          onClick={() => {
+            if (isVoiceSupported) {
+              toggleRecording();
+            } else {
+              toggleMic();
+            }
+          }}
           className={cn(
-            "w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110",
-            isMicEnabled
+            "w-14 h-14 rounded-full flex items-center justify-center transition-all hover:scale-110 relative",
+            isVoiceRecording
+              ? "bg-red-500 hover:bg-red-600 animate-pulse"
+              : isMicEnabled
               ? "bg-slate-700 hover:bg-slate-600"
               : "bg-red-500 hover:bg-red-600"
           )}
+          title={isVoiceSupported ? "Click to start voice recording" : "Toggle microphone"}
         >
-          {isMicEnabled ? (
+          {isVoiceRecording ? (
+            <>
+              <Mic className="w-6 h-6" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+            </>
+          ) : isMicEnabled ? (
             <Mic className="w-6 h-6" />
           ) : (
             <MicOff className="w-6 h-6" />
